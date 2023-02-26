@@ -8,5 +8,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         StageManager.instance.SetStage();
+        BulletManager.instance.StartSpawnBullet();
     }
 }

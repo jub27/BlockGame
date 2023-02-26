@@ -15,7 +15,7 @@ public class Block : MonoBehaviour
         set
         {
             hp = value;
-            if(hp < 0)
+            if(hp <= 0)
             {
                 Explode();
             }
