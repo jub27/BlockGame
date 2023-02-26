@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    private const int STAGE_WIDTH_BLOCK_COUNT = 24;
-    private const int STAGE_HEIGHT_BLOCK_COUNT = 24;
+    private const int STAGE_WIDTH_BLOCK_COUNT = 12;
+    private const int STAGE_HEIGHT_BLOCK_COUNT = 12;
 
     private ObjectPool<Block> blockObjectPool;
 
@@ -30,7 +30,7 @@ public class StageManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        blockObjectPool = new ObjectPool<Block>(blockPrefab, STAGE_WIDTH_BLOCK_COUNT * STAGE_HEIGHT_BLOCK_COUNT);
+        blockObjectPool = new ObjectPool<Block>(blockPrefab, STAGE_WIDTH_BLOCK_COUNT * STAGE_HEIGHT_BLOCK_COUNT / 2);
         InitStageData();
     }
 
@@ -59,6 +59,7 @@ public class StageManager : MonoBehaviour
                 {
                     Block block = blockObjectPool.GetObject();
                     block.transform.SetParent(stageTransform);
+                    block.SetHp(100);
                     block.SetSize(new Vector2(blockWidth, blockHeight));
                     block.SetPosition(new Vector2(blockWidth * x, -blockHeight * y));
                     curStageBlockCount++;

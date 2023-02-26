@@ -5,12 +5,17 @@ public class ObjectPool<T> where T : Component
 {
     private List<T> pooledObjects = new List<T>();
     private T prefab;
-    private int maxObjects;
 
-    public ObjectPool(T prefab, int maxObjects)
+    public ObjectPool(T prefab, int preGenerateCount)
     {
         this.prefab = prefab;
-        this.maxObjects = maxObjects;
+
+        for (int i = 0; i < preGenerateCount; i++)
+        {
+            T newObj = Object.Instantiate(prefab);
+            pooledObjects.Add(newObj);
+            newObj.gameObject.SetActive(false);
+        }
     }
 
     // 오브젝트를 풀에서 가져오거나, 생성해서 반환합니다.
@@ -25,15 +30,10 @@ public class ObjectPool<T> where T : Component
             }
         }
 
-        if (pooledObjects.Count < maxObjects)
-        {
-            T newObj = Object.Instantiate(prefab);
-            pooledObjects.Add(newObj);
-            newObj.gameObject.SetActive(true);
-            return newObj;
-        }
-
-        return null;
+        T newObj = Object.Instantiate(prefab);
+        pooledObjects.Add(newObj);
+        newObj.gameObject.SetActive(true);
+        return newObj;
     }
 
     // 오브젝트를 비활성화해서 풀에 반환합니다.

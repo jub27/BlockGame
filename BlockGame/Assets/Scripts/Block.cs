@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Block : MonoBehaviour
 {
@@ -9,14 +10,14 @@ public class Block : MonoBehaviour
     {
         get
         {
-            return Hp;
+            return hp;
         }
         set
         {
             hp = value;
             if(hp < 0)
             {
-
+                Explode();
             }
         }
     }
@@ -53,6 +54,11 @@ public class Block : MonoBehaviour
 
     private void Explode()
     {
-        StageManager.instance.ReturnObject(this);
+        boxCollider.enabled = false;
+        rectTransform.DOScale(1.5f, 0.5f).OnComplete(() =>
+        {
+            StageManager.instance.ReturnObject(this);
+            boxCollider.enabled = true;
+        });
     }
 }
