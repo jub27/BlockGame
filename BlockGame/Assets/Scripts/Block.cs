@@ -38,7 +38,6 @@ public class Block : MonoBehaviour
     public void SetSize(Vector2 size)
     {
         rectTransform.sizeDelta = size;
-        boxCollider.offset = new Vector2(size.x / 2, -size.y / 2);
         boxCollider.size = size;
     }
 

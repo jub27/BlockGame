@@ -46,8 +46,9 @@ public class BulletManager : MonoBehaviour
             {
                 Bullet bullet = bulletObjectPool.GetObject();
                 bullet.transform.SetParent(bulletsTransform);
+                bullet.SetSize(new Vector2(Screen.width / (StageManager.STAGE_WIDTH_BLOCK_COUNT * 16), Screen.height / (StageManager.STAGE_HEIGHT_BLOCK_COUNT * 8)));
                 bullet.SetAttackStat(100);
-                bullet.SetHp(100);
+                bullet.SetHp(15);
                 bullet.SetDir(Random.rotation.eulerAngles.normalized);
                 bullet.SetMoveSpeed(100);
                 bullet.Shoot();

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    private const int STAGE_WIDTH_BLOCK_COUNT = 12;
-    private const int STAGE_HEIGHT_BLOCK_COUNT = 12;
+    public const int STAGE_WIDTH_BLOCK_COUNT = 12;
+    public const int STAGE_HEIGHT_BLOCK_COUNT = 12;
 
     private ObjectPool<Block> blockObjectPool;
 
@@ -61,7 +61,7 @@ public class StageManager : MonoBehaviour
                     block.transform.SetParent(stageTransform);
                     block.SetHp(100);
                     block.SetSize(new Vector2(blockWidth, blockHeight));
-                    block.SetPosition(new Vector2(blockWidth * x, -blockHeight * y));
+                    block.SetPosition(new Vector2(blockWidth * x + blockWidth / 2.0f - blockWidth * STAGE_WIDTH_BLOCK_COUNT / 2.0f, -blockHeight * y - blockHeight / 2.0f + blockHeight * STAGE_HEIGHT_BLOCK_COUNT / 2.0f)); ;
                     curStageBlockCount++;
                 }
             }

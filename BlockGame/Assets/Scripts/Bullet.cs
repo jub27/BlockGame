@@ -46,6 +46,12 @@ public class Bullet : MonoBehaviour
         Hp = hp;
     }
 
+    public void SetSize(Vector2 size)
+    {
+        rectTransform.sizeDelta = size;
+        boxCollider.size = size;
+    }
+
     public void SetMoveSpeed(float moveSpeed)
     {
         this.moveSpeed = moveSpeed;
@@ -68,17 +74,45 @@ public class Bullet : MonoBehaviour
         {
             yield return null;
             rectTransform.anchoredPosition += moveSpeed * Time.deltaTime * dir;
+            if(Mathf.Abs(rectTransform.anchoredPosition.x) >= Screen.width / 1.9f|| Mathf.Abs(rectTransform.anchoredPosition.y)>= Screen.height / 1.9f)
+            {
+                OnOutScreen();
+                break;
+            }
         }
     }
 
     private void Explode()
     {
+        StopMove();
         boxCollider.enabled = false;
         rectTransform.DOScale(1.5f, 0.5f).OnComplete(() =>
         {
-            BulletManager.instance.ReturnObject(this);
+            rectTransform.localScale = Vector3.one;
             boxCollider.enabled = true;
+            BulletManager.instance.ReturnObject(this);
         });
+    }
+
+    private void OnOutScreen()
+    {
+        StopMove();
+        boxCollider.enabled = false;
+        rectTransform.DOScale(1.5f, 0.5f).OnComplete(() =>
+        {
+            rectTransform.localScale = Vector3.one;
+            boxCollider.enabled = true;
+            BulletManager.instance.ReturnObject(this);
+        });
+    }
+
+    private void StopMove()
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
