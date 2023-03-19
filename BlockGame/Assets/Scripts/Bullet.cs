@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
     }
     private float attackStat;
     private float moveSpeed;
-    private Vector2 dir;
+    private Vector3 dir;
 
     private RectTransform rectTransform;
     private BoxCollider2D boxCollider;
@@ -60,11 +60,12 @@ public class Bullet : MonoBehaviour
     public void SetDir(Vector2 dir)
     {
         this.dir = dir;
+        Debug.Log(dir);
     }
 
     public void Shoot()
     {
-        rectTransform.anchoredPosition = Vector2.zero;
+        rectTransform.localPosition = Vector2.zero;
         moveCoroutine = StartCoroutine(AsyncMove());
     }
 
@@ -73,8 +74,8 @@ public class Bullet : MonoBehaviour
         while (true)
         {
             yield return null;
-            rectTransform.anchoredPosition += moveSpeed * Time.deltaTime * dir;
-            if(Mathf.Abs(rectTransform.anchoredPosition.x) >= Screen.width / 1.9f|| Mathf.Abs(rectTransform.anchoredPosition.y)>= Screen.height / 1.9f)
+            rectTransform.localPosition += moveSpeed * Time.deltaTime * dir;
+            if(Mathf.Abs(rectTransform.localPosition.x) >= Screen.width / 1.9f|| Mathf.Abs(rectTransform.localPosition.y)>= Screen.height / 1.9f)
             {
                 OnOutScreen();
                 break;
@@ -115,11 +116,11 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Block"))
+        if (collision.transform.CompareTag("Block"))
         {
-            dir *= -1;
+            dir = Vector2.Reflect(dir, collision.contacts[0].normal);
             collision.transform.GetComponent<Block>().TakeDamage(attackStat);
             Hp -= 5;
         }

@@ -43,7 +43,7 @@ public class Block : MonoBehaviour
 
     public void SetPosition(Vector2 position)
     {
-        rectTransform.anchoredPosition = position;
+        rectTransform.localPosition = position;
     }
 
     public void TakeDamage(float damage)

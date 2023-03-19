@@ -49,7 +49,13 @@ public class BulletManager : MonoBehaviour
                 bullet.SetSize(new Vector2(Screen.width / (StageManager.STAGE_WIDTH_BLOCK_COUNT * 16), Screen.height / (StageManager.STAGE_HEIGHT_BLOCK_COUNT * 8)));
                 bullet.SetAttackStat(100);
                 bullet.SetHp(15);
-                bullet.SetDir(Random.rotation.eulerAngles.normalized);
+                Vector2 dir;
+                do
+                {
+                    dir = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+                } while (dir == Vector2.zero);
+                dir.Normalize();
+                bullet.SetDir(dir);
                 bullet.SetMoveSpeed(100);
                 bullet.Shoot();
                 curTime = 0;
